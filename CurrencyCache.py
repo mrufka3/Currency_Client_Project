@@ -6,6 +6,16 @@ class CurrencyCache:
     def __init__(self):
         self.__cache = dict()
         self.__last_cache_error = ''
+        self.__cache_event_history = []
+
+    def get_cache_event(self, index):
+        return self.__cache_event_history[index]
+
+    def get_last_cache_event(self):
+        return self.__cache_event_history[-1]
+
+    def get_amount_of_cache_events(self):
+        return len(self.__cache_event_history)
 
     def cached(self, _currency):
         return _currency in self.__cache
@@ -29,13 +39,10 @@ class CurrencyCache:
         self.__cache[_currency] = _value
 
     def print_response_from_cache(self, _currency):
-        print('Get cached data of ' + _currency)
-        print(json.loads(self.__cache[_currency].text)["rates"])
-
-    @staticmethod
-    def print_response_from_server(response):
-        print(response.url.split('?')[0] + ' - GET - ' + str(response.status_code))
-        print(json.loads(response.text)["rates"])
+        message = 'Get cached data of ' + _currency
+        self.__cache_event_history.append(message)
+        print(message)
+        print(str(json.loads(self.__cache[_currency].text)["rates"]))
 
     @staticmethod
     def get_current_currency(response):

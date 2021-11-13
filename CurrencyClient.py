@@ -4,6 +4,7 @@ from CurrencyCache import CurrencyCache
 
 import asyncio
 import requests
+import json
 
 
 class CurrencyClient:
@@ -24,6 +25,7 @@ class CurrencyClient:
         self.__base_currency = ''
         self.__access_key = ''
         self.__last_connection_error = ''
+        self.__event_history = []
 
     def __getattr__(self, item):
         def method(*args):
@@ -33,6 +35,15 @@ class CurrencyClient:
                 raise AttributeError
 
         return method
+
+    def get_event(self, index):
+        return self.__event_history[index]
+
+    def get_amount_of_events(self):
+        return len(self.__event_history)
+
+    def get_last_event(self):
+        return self.__event_history[-1]
 
     def set_access_key(self, _access_key):
         self.__access_key = _access_key
@@ -69,6 +80,12 @@ class CurrencyClient:
 
             self.get_from_server_and_cache(_currency)
             await asyncio.sleep(self.__interval.total_seconds())
+
+    def print_response_from_server(self, response):
+        message = response.url.split('?')[0] + ' - GET - ' + str(response.status_code)
+        self.__event_history.append(message)
+        print(message)
+        print(json.loads(response.text)["rates"])
 
     def set_interval(self, **kwargs):
         self.__interval = timedelta(**kwargs)

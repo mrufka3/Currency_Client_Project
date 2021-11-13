@@ -2,7 +2,7 @@ import asyncio
 
 from CurrencyClient import CurrencyClient
 
-access_key = 'b84d1e8f27aa924158e9372e5b9dafc0'
+access_key = 'a899a63095452f4c92d59970b7ff4884'
 currencies = ["USD", "AUD", "CAD", "PLN", "MXN"]
 base_currency = 'EUR'
 time_periods = [{"seconds": 20}, {"seconds": 30}, {"seconds": 40}, {"seconds": 50}, {"seconds": 60}]
